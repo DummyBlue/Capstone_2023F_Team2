@@ -25,6 +25,8 @@
 
 # 🚿 사용 Tech
 - C++
+- python
+- OpenCV
 
 # 📝 코드 Sample
 ````
