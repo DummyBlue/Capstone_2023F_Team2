@@ -26,6 +26,7 @@
 # 🚿 사용 Tech
 - C++
 - python
+- MFCC(Mel-frequency cepstral coefficients)
 - OpenCV
 
 # 📝 코드 Sample
