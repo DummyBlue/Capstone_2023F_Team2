@@ -29,6 +29,10 @@
 - MFCC(Mel-frequency cepstral coefficients)
 - OpenCV
 
+# 사용 모듈
+- pydub (python)
+- librosa (python)
+
 # 📝 코드 Sample
 ````
 
