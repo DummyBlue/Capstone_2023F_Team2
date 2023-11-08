@@ -30,8 +30,8 @@
 - OpenCV
 
 # 사용 모듈
-- pydub (python)
-- librosa (python)
+- pydub (python) (.mp3 to .wav)
+- librosa (python) (.wav파일의 MFCC)
 
 # 📝 코드 Sample
 ````
