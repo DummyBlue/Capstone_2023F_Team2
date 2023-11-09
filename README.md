@@ -30,9 +30,9 @@
 - OpenCV
 
 # 👨‍💻사용 모듈
-- numpy (python) (calculation)
-- pydub (python) (.mp3 to .wav)
-- librosa (python) (.wav파일의 MFCC)
+- numpy (python)
+- pydub (python)
+- librosa (python)
 
 # 📝 코드 Sample
 ````
