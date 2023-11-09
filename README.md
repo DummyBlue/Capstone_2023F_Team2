@@ -23,11 +23,8 @@
 
 ---
 
-# 🚿 사용 Tech
-- C++
-- python
-- MFCC(Mel-frequency cepstral coefficients)
-- OpenCV
+# 🚿 사용 Language
+- Python
 
 # 👨‍💻사용 모듈
 - numpy (python)
