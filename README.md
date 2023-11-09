@@ -29,7 +29,8 @@
 - MFCC(Mel-frequency cepstral coefficients)
 - OpenCV
 
-# 사용 모듈
+# ![image](https://github.com/DummyBlue/KeySpyder_ko/assets/80573129/b774d8bf-fc49-40c4-9f75-eedc76f8f9b0)
+사용 모듈
 - numpy (python) (calculation)
 - pydub (python) (.mp3 to .wav)
 - librosa (python) (.wav파일의 MFCC)
