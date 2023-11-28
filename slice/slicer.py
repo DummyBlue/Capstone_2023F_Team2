@@ -1,59 +1,59 @@
-import librosa
-import numpy as np
 from pydub import AudioSegment
 import os
+import librosa
+import matplotlib.pyplot as plt
 
-# 입력한 녹음 파일의 경로
-audio_path = "korean_a.wav"
+# Convert MP3 to WAV
+sound = AudioSegment.from_mp3("korean_g.mp3")
+sound.export("korean_g.wav", format="wav")
 
-# 오디오 파일 로드
-audio, sr = librosa.load(audio_path, sr=None, mono=True)
+# Define slicing ranges and file names based on specified times for key C
+slicing_ranges = [
+    (0.85, 1.25, 'key_g_0'),
+    (1.9, 2.3, 'key_g_1'),
+    (2.95, 3.35, 'key_g_2'),
+    (3.98, 4.38, 'key_g_3'),
+    (5.0, 5.45, 'key_g_4'),
+    (6.05, 6.45, 'key_g_5'),
+    (7.12, 7.52, 'key_g_6'), 
+    (8.1, 8.5, 'key_g_7'),
+    (9.1, 9.5, 'key_g_8'),
+    (10.11, 10.51, 'key_g_9'),
+    (11.11, 11.51, 'key_g_10'),
+    (12.15, 12.55, 'key_g_11'),
+    (13.15, 13.55, 'key_g_12'),
+    (14.2, 14.6, 'key_g_13'),
+    (15.11, 15.51, 'key_g_14')
+]
 
-# Energy Threshold를 정의합니다. (적절한 값을 찾기 위해 실험 필요)
-energy_threshold = 0.01 * np.max(np.abs(audio))
+# Load audio file for key ?
+audio = AudioSegment.from_wav('korean_g.wav')
 
-# Energy-based onset detection을 통해 각 키의 시작 시간을 탐지합니다.
-onset_frames = librosa.onset.onset_detect(
-    y=audio,
-    sr=sr,
-    backtrack=True,
-    pre_max=20,
-    post_max=20,
-    pre_avg=100,
-    post_avg=100,
-    delta=0.2,
-    wait=0
-)
+# Create a folder if it doesn't exist
+folder_name = 'key_g_sliced'
+if not os.path.exists(folder_name):
+    os.makedirs(folder_name)
 
-# 각 키의 시작과 끝을 찾습니다.
-key_starts = []
-key_ends = []
+# Remove existing files with the same names if they exist
+for _, _, filename in slicing_ranges:
+    file_path = os.path.join(folder_name, f'{filename}.wav')
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
-for i in range(len(onset_frames)):
-    # 키의 시작은 onset_frames에서 해당 프레임부터 시작합니다.
-    start = onset_frames[i]
+# Slice audio for each range and save to the 'key_?_sliced' folder
+for start, end, filename in slicing_ranges:
+    start_time_ms = int(start * 1000)
+    end_time_ms = int(end * 1000)
     
-    # 마지막 프레임이거나 다음 onset이 너무 빨리 시작될 경우 해당 위치까지로 설정합니다.
-    if i == len(onset_frames) - 1 or onset_frames[i + 1] - start > 0.5 * sr:
-        end = start + int(0.5 * sr)  # 0.1초로 설정 (설정을 바꿀 수 있습니다.)
-    else:
-        end = onset_frames[i + 1]
+    extracted_audio = audio[start_time_ms:end_time_ms]
+    extracted_audio.export(os.path.join(folder_name, f'{filename}.wav'), format='wav')
 
-    key_starts.append(start)
-    key_ends.append(end)
-
-# 'key_slices' 폴더 생성 혹은 이미 존재할 경우 그냥 사용
-folder_name = 'key_slices'
-os.makedirs(folder_name, exist_ok=True)
-
-# 기존에 저장된 key 코드 삭제
-for file in os.listdir(folder_name):
-    if file.startswith("key_"):
-        os.remove(os.path.join(folder_name, file))
-
-# 각 키를 잘라서 'key_slices' 폴더에 저장합니다.
-for idx, (start, end) in enumerate(zip(key_starts, key_ends)):
-    key_audio = AudioSegment.from_wav(audio_path)[start:end]
-    # Check if the segment duration is greater than zero before exporting
-    if len(key_audio) > 0:
-        key_audio.export(os.path.join(folder_name, f"key_{idx}.wav"), format="wav")
+    # Load and display the sliced audio using librosa
+    file = os.path.join(folder_name, f'{filename}.wav')
+    y, sr = librosa.load(file)
+    plt.figure(figsize=(10, 3))
+    plt.plot(y)
+    plt.title(f'Sliced Audio: {filename}')
+    plt.xlabel('Time')
+    plt.ylabel('Amplitude')
+    plt.show()
