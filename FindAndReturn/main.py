@@ -63,6 +63,8 @@ def doProcess():
             features.append(extract_mfcc(z))
             labels.append(k)
 
+    # Machine-Learning Part START
+    
     X = np.array(features)
     y = np.array(labels)
 
