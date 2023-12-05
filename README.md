@@ -27,9 +27,9 @@
 - Python
 
 # 👨‍💻사용 모듈
-- numpy (python)
-- pydub (python)
-- librosa (python)
+- numpy
+- pydub
+- librosa
 
 ---
 
