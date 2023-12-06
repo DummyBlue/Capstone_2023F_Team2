@@ -103,7 +103,7 @@ def doProcess():
     y_pred = rf_modelcv.predict(X_test)
     print("자음과 모음만을 구분하는 모델:", f1_score(y_test, y_pred, average="micro"))
     # ----------
-
+    '''
     # 자음만 학습한 모델
     Xc = np.array(features_c)
     yc = np.array(labels_c)
@@ -127,7 +127,7 @@ def doProcess():
     y_pred = rf_modelv.predict(X_test)
     print("모음만을 구분하는 모델:", f1_score(y_test, y_pred, average="micro"))
     # ----------
-
+    '''
     # 모든 키를 학습하는 모델
     X = np.array(features)
     y = np.array(labels)
@@ -163,6 +163,7 @@ def doProcess():
             else:
                 tmp_vow = probability * 100
 
+        '''
         if(tmp_con > tmp_vow): # 자음일 경우
             c_prob = predict_new_audio(rf_modelc, audio_path)
             print(f"Consonant Probabilities for {audio_path}:")
@@ -183,6 +184,13 @@ def doProcess():
             for labelcv, probcv in zip(rf_model.classes_, prob):
                 tmp_dict[labelcv] = probcv * 100
                 print(f"  {labelcv} = {probcv * 100:.2f}%")
+        '''
+
+        prob = predict_new_audio(rf_model, audio_path)
+        print(f"All Keys Probabilities for {audio_path}:")
+        for labelcv, probcv in zip(rf_model.classes_, prob):
+            tmp_dict[labelcv] = probcv * 100
+            print(f"  {labelcv} = {probcv * 100:.2f}%")
 
 
         print("\n")
