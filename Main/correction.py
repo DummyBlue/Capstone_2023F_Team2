@@ -12,6 +12,8 @@ def lookup_words(term):
         print(f"{suggestion.distance}")
         print(f"{suggestion.count}")
 
-if __name__ == '__main__':
-    tmp = input("Type words to correct: ").strip()
-    lookup_words(tmp)
+        return suggestion.term
+
+def do_correction(word):
+    tmp = word.strip()
+    return lookup_words(tmp)

@@ -81,7 +81,7 @@ def eval_grammar(wlist):
 
     outer_list.append(inner_list.copy())
     print(outer_list)
-    make_one(outer_list)
+    return make_one(outer_list)
 
 def make_one(w):
     tmp = ""
@@ -96,8 +96,15 @@ def make_one(w):
         total_tmp += " "
         tmp = ""
 
-    print(f"{hgtk.text.compose(total_tmp)}")
+    result = hgtk.text.compose(total_tmp)
+    return(result)
 
+def do_inspect(word):
+    word_cnt = 0
+    return eval_grammar(word)
+
+
+'''
 if __name__ == '__main__':
     word_cnt = 0
     tmp_list1 = ['ㄱ', 'ㅐ', 'ㄴ', 'ㅏ', 'ㄹ', 'ㅣ']
@@ -107,5 +114,5 @@ if __name__ == '__main__':
     eval_grammar(tmp_list1)
     eval_grammar(tmp_list2)
     eval_grammar(tmp_list3)
-
+'''
 
