@@ -6,10 +6,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
 from sklearn.model_selection import GridSearchCV
 
-params = { 'n_estimators' : [10, 100],
+params = { 'n_estimators' : [100, 200],
            'max_depth' : [6, 8, 10, 12],
-           'min_samples_leaf' : [8, 12, 18],
-           'min_samples_split' : [8, 16, 20]
+           'min_samples_leaf' : [3, 5, 7, 10],
+           'min_samples_split' : [2, 3, 5, 10]
             }
 
 def extract_mfcc(audio_path):
@@ -118,6 +118,11 @@ def doProcess():
     print(tmp_params)
 
     rf_model_custom = RandomForestClassifier(n_estimators=tmp_params['n_estimators'], max_depth=tmp_params['max_depth'], min_samples_leaf=tmp_params['min_samples_leaf'], min_samples_split=tmp_params['min_samples_split'])
+
+    rf_model1 = RandomForestClassifier()
+    rf_model1.fit(X_train, y_train)
+    y_pred1 = rf_model1.predict(X_test)
+    print("모든 키를 구분하는 모델 원본:", f1_score(y_test, y_pred1, average="micro"))
 
     rf_model_custom.fit(X_train, y_train)
     y_pred = rf_model_custom.predict(X_test)
