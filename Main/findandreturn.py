@@ -4,6 +4,13 @@ import os
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
+from sklearn.model_selection import GridSearchCV
+
+params = { 'n_estimators' : [10, 100],
+           'max_depth' : [6, 8, 10, 12],
+           'min_samples_leaf' : [8, 12, 18],
+           'min_samples_split' : [8, 16, 20]
+            }
 
 def extract_mfcc(audio_path):
     y, sr = librosa.load(audio_path, sr=None)
@@ -99,8 +106,21 @@ def doProcess():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=ts_size)
 
     rf_model = RandomForestClassifier()
-    rf_model.fit(X_train, y_train)
-    y_pred = rf_model.predict(X_test)
+
+    # GridSearch를 이용한 하이퍼파라미터 튜닝 수행
+    grid_cv = GridSearchCV(rf_model, param_grid=params, cv=3, n_jobs=-1)
+    grid_cv.fit(X_train, y_train)
+
+    print('최적 하이퍼 파라미터: ', grid_cv.best_params_)
+    print('최고 예측 정확도: {:.4f}'.format(grid_cv.best_score_))
+
+    tmp_params = grid_cv.best_params_
+    print(tmp_params)
+
+    rf_model_custom = RandomForestClassifier(n_estimators=tmp_params['n_estimators'], max_depth=tmp_params['max_depth'], min_samples_leaf=tmp_params['min_samples_leaf'], min_samples_split=tmp_params['min_samples_split'])
+
+    rf_model_custom.fit(X_train, y_train)
+    y_pred = rf_model_custom.predict(X_test)
     print("모든 키를 구분하는 모델:", f1_score(y_test, y_pred, average="micro"))
     # ----------
 
@@ -127,9 +147,9 @@ def doProcess():
             else:
                 tmp_vow = probability * 100
 
-        prob = predict_new_audio(rf_model, audio_path)
+        prob = predict_new_audio(rf_model_custom, audio_path)
         print(f"All Keys Probabilities for {audio_path}:")
-        for labelcv, probcv in zip(rf_model.classes_, prob):
+        for labelcv, probcv in zip(rf_model_custom.classes_, prob):
             tmp_dict[labelcv] = probcv * 100
             print(f"  {labelcv} = {probcv * 100:.2f}%")
 
