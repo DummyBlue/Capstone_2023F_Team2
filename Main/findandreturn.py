@@ -21,7 +21,7 @@ def predict_new_audio(model, audio_path):
     new_feature = extract_mfcc(audio_path)
     return model.predict_proba([new_feature])[0]
 
-def doProcess():
+def doProcess(word_name):
     topPath = "./sounddata/"
     cPath = topPath + "consonant/"
     vPath = topPath + "vowel/"
@@ -129,10 +129,10 @@ def doProcess():
     print("모든 키를 구분하는 모델:", f1_score(y_test, y_pred, average="micro"))
     # ----------
 
-    new_audio_path = os.listdir('./testdata/turtle')
+    new_audio_path = os.listdir(f'./testdata/{word_name}')
 
     for k in range(len(new_audio_path)):
-        new_audio_path[k] = "./testdata/turtle/" + new_audio_path[k]
+        new_audio_path[k] = f"./testdata/{word_name}/" + new_audio_path[k]
 
     output_dict = {}
 
