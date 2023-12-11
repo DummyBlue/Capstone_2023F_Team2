@@ -18,10 +18,10 @@ def rm_space(list):
 
 if __name__ == '__main__':
 
-    for k in range(10): #반복 횟수 지정 
+    for k in range(5): #반복 횟수 지정 
         print(f"\n\n{k}th Iteration:\n")
 
-        final_rst = doProcess('turtle') # 음성을 글자로 변환 / 파라미터명으로 폴더명 전달 
+        final_rst = doProcess('turtle') # 음성을 글자로 변환 / 파라미터명으로 폴더명 전달 / 수정해야 함
         print(final_rst)
 
         mid_list = do_comb(final_rst) # 모듈을 이용해 합치기 수행
